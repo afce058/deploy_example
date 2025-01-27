@@ -26,9 +26,9 @@ jobs:
         working-directory: ./service1
         run: |
           npm install
-          npm run build      
+          node -e 'require("./src/index.js")'
       - name: compile service2
         working-directory: ./service2
         run: |
           npm install
-          npm run build
+          node -e 'require("./src/index.js")'

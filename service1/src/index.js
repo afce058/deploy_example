@@ -13,6 +13,8 @@ app.get("/api/endpoint2", (req, res) => {
     res.status(200).json({ message: "Endpoint 2 service 1" });
 });
 
-app.listen(port, () => {
-    console.log("Service 1 escuchando");
-});
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log("Service 1 escuchando");
+    });
+}
