@@ -1,0 +1,34 @@
+name: compile project
+on:
+  push:
+    branches: [feature/**]
+    paths:
+      - "service1/**"
+      - "service2/**"
+      - "react-client/**"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: compile front
+        working-directory: ./react-client
+        run: |
+          npm install
+          npm run build
+      - name: compile service1
+        working-directory: ./service1
+        run: |
+          npm install
+          npm run build      
+      - name: compile service2
+        working-directory: ./service2
+        run: |
+          npm install
+          npm run build
