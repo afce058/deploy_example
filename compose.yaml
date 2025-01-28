@@ -1,0 +1,18 @@
+version: "3"
+services:
+
+  service1:
+    image: service1
+    build:
+      context: ./service1
+      dockerfile: Dockerfile-dev
+    container_name: service1
+    volumes:
+      - /tmp/service1/npm-cache:/root/.npm:z
+      - ./service1/src:/usr/app/src:z
+    ports:
+      - "4000:80"
+    environment:
+      - PORT=80
+      - NODE_ENV=development
+    restart: "no"
