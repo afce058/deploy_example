@@ -1,0 +1,20 @@
+name: push container service 1
+permissions:
+  actions: write
+  packages: write
+  contents: read
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+    - 'service1/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/push_container.yml
+    with:
+      imageRepository: 'micros1'
+      containerRegistry: 'docker.io/afce030'
+      dockerfilePath: 'service1/Dockerfile'
