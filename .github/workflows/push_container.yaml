@@ -22,9 +22,6 @@ on:
         required: true
         type: string
         description: dockerfile location
-env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   push_container:
@@ -46,10 +43,10 @@ jobs:
         uses: gittools/actions/gitversion/execute@v3.1.11
 
       - name: Login to Docker
-        uses: docker/login-action@v2 
+        uses: docker/login-action@v3 
         with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: select docker driver
         run: |
           docker buildx create --use --driver=docker-container
