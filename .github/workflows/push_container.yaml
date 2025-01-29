@@ -16,21 +16,15 @@ on:
       dockerfileName:
         required: true
         type: string
-  workflow_dispatch:
-    inputs:
-      environment:
+    secrets:
+      DOCKER_USERNAME:
         required: true
-        type: string
-        description: github environment
-      microservicePath:
+      DOCKER_PASSWORD:
         required: true
-        type: string
-        description: path for microservice
-      dockerfileName:
+      DOCKER_REGISTRY:
         required: true
-        type: string
-        description: name for dockerfile to build
-
+      DOCKER_REPO:
+        required: true
 jobs:
   push_container:
     runs-on: ubuntu-latest
