@@ -17,6 +17,7 @@ jobs:
       - name: Generate sbom
         working-directory: ./service1
         run: |
+          npm install
           npx @cyclonedx/cyclonedx-npm --output-file sbom.json
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
