@@ -33,7 +33,7 @@ on:
         type: string
         description: dockerfile location
 jobs:
-  run_tests:
+  push_container:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

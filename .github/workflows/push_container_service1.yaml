@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  push_service1:
     uses: ./.github/workflows/push_container.yml
     with:
       imageRepository: 'micros1'
