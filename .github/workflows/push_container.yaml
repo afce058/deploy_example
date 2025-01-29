@@ -6,28 +6,18 @@ permissions:
 on:
   workflow_call:
     inputs:
-      imageRepository:
-        required: true
-        type: string
-      containerRegistry:
+      environment:
         required: true
         type: string
       dockerfilePath:
         required: true
         type: string
-    secrets:
-      registryPassword:
-        required: true
   workflow_dispatch:
     inputs:
-      imageRepository:
+      environment:
         required: true
         type: string
-        description: image name
-      containerRegistry:
-        required: true
-        type: string
-        description: registry name
+        description: github environment
       dockerfilePath:
         required: true
         type: string
@@ -35,6 +25,7 @@ on:
 jobs:
   push_container:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -62,6 +53,6 @@ jobs:
             context: ${{github.workspace}}
             file: ${{inputs.dockerfilePath}}
             push: true
-            tags: ${{inputs.containerRegistry}}/${{inputs.imageRepository}}:${{env.GitVersion_SemVer}}
+            tags: ${{vars.DOCKER_REGISTRY}}/${{vars.DOCKER_REPO}}:${{env.GitVersion_SemVer}}
             cache-from: type=gha
             cache-to: type=gha,mode=max

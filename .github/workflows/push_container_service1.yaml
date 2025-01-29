@@ -15,6 +15,5 @@ jobs:
   push_service1:
     uses: ./.github/workflows/push_container.yaml
     with:
-      imageRepository: 'micros1'
-      containerRegistry: 'docker.io/afce030'
+      environment: prod
       dockerfilePath: 'service1/Dockerfile'
