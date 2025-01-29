@@ -20,4 +20,4 @@ jobs:
           npm install
           npm test
       - name: Add report to summary
-        run: cat test-results.md >> $GITHUB_STEP_SUMMARY
+        run: cat ./service1/test-results.md >> $GITHUB_STEP_SUMMARY
