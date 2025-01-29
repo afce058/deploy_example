@@ -3,6 +3,7 @@ permissions:
   actions: write
   packages: write
   contents: read
+
 on:
   workflow_call:
     inputs:
@@ -60,7 +61,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
             context: ${{inputs.microservicePath}}
-            file: ${{inputs.dockerfileName}}
+            file: ${{inputs.microservicePath}}/${{inputs.dockerfileName}}
             push: true
             tags: ${{secrets.DOCKER_REGISTRY}}/${{secrets.DOCKER_REPO}}:${{env.GitVersion_SemVer}}
             cache-from: type=gha
