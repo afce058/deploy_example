@@ -9,7 +9,10 @@ on:
       environment:
         required: true
         type: string
-      dockerfilePath:
+      microservicePath:
+        required: true
+        type: string
+      dockerfileName:
         required: true
         type: string
   workflow_dispatch:
@@ -18,10 +21,14 @@ on:
         required: true
         type: string
         description: github environment
-      dockerfilePath:
+      microservicePath:
         required: true
         type: string
-        description: dockerfile location
+        description: path for microservice
+      dockerfileName:
+        required: true
+        type: string
+        description: name for dockerfile to build
 
 jobs:
   push_container:
@@ -52,8 +59,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-            context: ${{github.workspace}}/service1
-            file: ${{inputs.dockerfilePath}}
+            context: ${{inputs.microservicePath}}
+            file: ${{inputs.dockerfileName}}
             push: true
             tags: ${{secrets.DOCKER_REGISTRY}}/${{secrets.DOCKER_REPO}}:${{env.GitVersion_SemVer}}
             cache-from: type=gha

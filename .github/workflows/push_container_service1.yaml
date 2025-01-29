@@ -16,4 +16,5 @@ jobs:
     uses: ./.github/workflows/push_container.yaml
     with:
       environment: prod
-      dockerfilePath: 'service1/Dockerfile'
+      microservicePath: ${{ github.workspace }}/service1
+      dockerfileName: Dockerfile
