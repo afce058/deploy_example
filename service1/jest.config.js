@@ -5,7 +5,7 @@ module.exports = {
         "default", // Mantiene el reporter estándar de Jest
         [
           "./customMarkdownReporter.js", // Incluye el reporter personalizado
-          { output: "test-results_service1.md" } // Configura el nombre del archivo Markdown
+          { output: "test_results_service1.md" } // Configura el nombre del archivo Markdown
         ]
       ]
 };
