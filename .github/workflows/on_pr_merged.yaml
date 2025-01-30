@@ -58,8 +58,10 @@ jobs:
       microservicePath: ${{ matrix.micro }}
 
   create_containers:
-    uses: ./.github/workflows/push_container.yaml
-    needs: create_sbom
+    uses: ./.github/workflows/create_container.yaml
+    needs:
+      - create_sbom
+      - compute_tag_version
     strategy:
       matrix:
         micro:
@@ -68,7 +70,7 @@ jobs:
       max-parallel: 1
     with:
       environment: prod
-      tag: ${{needs.compute_tag_version.outputs.tag_version}}
+      tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       microservicePath: ${{ matrix.micro }}
       dockerfileName: Dockerfile
     secrets:

@@ -9,7 +9,7 @@ on:
         required: true
         type: string
 jobs:
-  run_tests:
+  create_sbom:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
