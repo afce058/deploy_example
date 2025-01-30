@@ -23,8 +23,7 @@ jobs:
           npm install
           npm test
       - name: Add report to summary
+        working-directory: ${{ github.workspace }}/${{ inputs.microservicePath }}
         run: |
-          cat ${{ github.workspace }}\
-          /${{ inputs.microservicePath }}\
-          /test_results_${{ inputs.microservicePath }}.md \
-          >> $GITHUB_STEP_SUMMARY
+          cat test_results_${{ inputs.microservicePath }}.md >> \
+          $GITHUB_STEP_SUMMARY
