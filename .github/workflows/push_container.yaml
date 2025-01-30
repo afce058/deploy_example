@@ -50,12 +50,12 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build image
+        working-directory: ${{github.workspace}}/${{inputs.microservicePath}}
         run: |
           docker build -t \
           ${{secrets.DOCKER_REGISTRY}}/\
           ${{secrets.DOCKER_REPO}}:${{env.GitVersion_SemVer}} \
-          --file ${{github.workspace}}/${{inputs.microservicePath}}/\
-          ${{inputs.dockerfileName}} \
+          --file ${{inputs.dockerfileName}} \
           .
 
       - name: Scan image Trivy
