@@ -1,4 +1,4 @@
-name: generate sbom
+name: Generate sbom
 on:
   workflow_call:
     tag:

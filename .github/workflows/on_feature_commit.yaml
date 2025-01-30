@@ -1,4 +1,4 @@
-name: on feature branch commit
+name: On feature branch commit
 on:
   push:
     branches: [feature/**]

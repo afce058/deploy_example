@@ -1,4 +1,4 @@
-name: "push container"
+name: Push container
 permissions:
   actions: write
   packages: write
