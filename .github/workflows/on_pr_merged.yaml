@@ -54,7 +54,6 @@ jobs:
           - service2
       max-parallel: 1
     with:
-      environment: prod
       tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       microservicePath: ${{ matrix.micro }}
 
