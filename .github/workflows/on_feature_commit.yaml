@@ -1,4 +1,4 @@
-name: compile project
+name: on feature branch commit
 on:
   push:
     branches: [feature/**]

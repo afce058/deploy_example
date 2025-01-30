@@ -1,4 +1,4 @@
-name: push container service 1
+name: On pr merged workflow
 permissions:
   actions: write
   packages: write
@@ -44,7 +44,7 @@ jobs:
       microservicePath: ${{ matrix.micro }}
 
   create_sbom:
-    uses: ./.github/workflows/on_pr_merged/create_sbom.yaml
+    uses: ./.github/workflows/artifacts/create_sbom.yaml
     needs: compute_tag_version
     strategy:
       matrix:
@@ -58,7 +58,7 @@ jobs:
       microservicePath: ${{ matrix.micro }}
 
   create_containers:
-    uses: ./.github/workflows/on_pr_merged/push_container.yaml
+    uses: ./.github/workflows/artifacts/push_container.yaml
     needs: create_sbom
     strategy:
       matrix:
