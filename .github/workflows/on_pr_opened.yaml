@@ -1,4 +1,4 @@
-name: On pull request opened workflow
+name: On PR opened workflow
 permissions:
   actions: write
   packages: write
