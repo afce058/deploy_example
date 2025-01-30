@@ -1,0 +1,33 @@
+name: generate sbom
+on:
+  workflow_call:
+    tag:
+      required: true
+      type: string
+    microservicePath:
+      required: true
+      type: string
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Generate sbom
+        working-directory: ${{ github.workspace }}/${{ inputs.microservicePath }}
+        run: |
+          npm install
+          npx @cyclonedx/cyclonedx-npm --output-file \
+          sbom_${{ inputs.microservicePath }}_${{ inputs.tag }}.json
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: sbom
+          path: ${{ github.workspace }}/${{ inputs.microservicePath }}/sbom_${{ inputs.microservicePath }}_${{ inputs.tag }}.json
+          retention-days: 4

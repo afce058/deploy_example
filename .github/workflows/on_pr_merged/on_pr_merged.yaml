@@ -1,0 +1,78 @@
+name: push container service 1
+permissions:
+  actions: write
+  packages: write
+  contents: read
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+    - 'service1/**'
+    - 'service2/**'
+  workflow_dispatch:
+
+jobs:
+  compute_tag_version:
+    runs-on: ubuntu-latest
+    outputs:
+      tag_version: ${{ env.GitVersion_SemVer }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.1.11
+        with:
+          versionSpec: '6.0.x'
+
+      - name: Determine Version
+        id: gitversion 
+        uses: gittools/actions/gitversion/execute@v3.1.11
+
+  run_tests:
+    uses: ./.github/workflows/tests/run_tests.yaml
+    strategy:
+      matrix:
+        micro:
+          - service1
+          - service2
+      max-parallel: 1
+    with:
+      microservicePath: ${{ matrix.micro }}
+
+  create_sbom:
+    uses: ./.github/workflows/on_pr_merged/create_sbom.yaml
+    needs: compute_tag_version
+    strategy:
+      matrix:
+        micro:
+          - service1
+          - service2
+      max-parallel: 1
+    with:
+      environment: prod
+      tag: ${{ needs.compute_tag_version.outputs.tag_version }}
+      microservicePath: ${{ matrix.micro }}
+
+  create_containers:
+    uses: ./.github/workflows/on_pr_merged/push_container.yaml
+    needs: create_sbom
+    strategy:
+      matrix:
+        micro:
+          - service1
+          - service2
+      max-parallel: 1
+    with:
+      environment: prod
+      tag: ${{needs.compute_tag_version.outputs.tag_version}}
+      microservicePath: ${{ matrix.micro }}
+      dockerfileName: Dockerfile
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}

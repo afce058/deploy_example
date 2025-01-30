@@ -1,0 +1,30 @@
+name: test service
+on:
+  workflow_call:
+    inputs:
+      microservicePath:
+        required: true
+        type: string
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: compile service
+        working-directory: ${{ github.workspace }}/${{ inputs.microservicePath }}
+        run: |
+          npm install
+          npm test
+      - name: Add report to summary
+        run: |
+          cat ${{ github.workspace }}\
+          /${{ inputs.microservicePath }}\
+          /test_results_${{ inputs.microservicePath }}.md \
+          >> $GITHUB_STEP_SUMMARY

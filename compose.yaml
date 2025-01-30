@@ -16,3 +16,19 @@ services:
       - PORT=80
       - NODE_ENV=development
     restart: "no"
+
+  service2:
+    image: service2
+    build:
+      context: ./service2
+      dockerfile: Dockerfile-dev
+    container_name: service2
+    volumes:
+      - /tmp/service2/npm-cache:/root/.npm:z
+      - ./service2/src:/usr/app/src:z
+    ports:
+      - "4001:80"
+    environment:
+      - PORT=80
+      - NODE_ENV=development
+    restart: "no"

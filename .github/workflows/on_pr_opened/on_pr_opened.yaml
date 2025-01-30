@@ -1,0 +1,23 @@
+name: Test services
+permissions:
+  actions: write
+  packages: write
+  contents: read
+
+on:
+  push:
+    pull_request:
+
+  workflow_dispatch:
+
+jobs:
+  run_tests:
+    uses: ./.github/workflows/tests/run_tests.yaml
+    strategy:
+      matrix:
+        micro:
+          - service1
+          - service2
+      max-parallel: 1
+    with:
+      microservicePath: ${{ matrix.micro }}

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 5002;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 
@@ -18,3 +18,5 @@ if (require.main === module) {
         console.log("Service 2 escuchando");
     });
 }
+
+module.exports = app;

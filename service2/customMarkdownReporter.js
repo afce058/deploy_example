@@ -9,8 +9,8 @@ class CustomMarkdownReporter {
   onRunComplete(_, results) {
     const { output } = this.options;
     const markdown = this.generateMarkdown(results);
-    fs.writeFileSync(output || "test_results_service1.md", markdown, "utf-8");
-    console.log(`Markdown report generated: ${output || "test_results_service1.md"}`);
+    fs.writeFileSync(output || "test_results_service2.md", markdown, "utf-8");
+    console.log(`Markdown report generated: ${output || "test_results_service2.md"}`);
   }
 
   generateMarkdown(results) {
