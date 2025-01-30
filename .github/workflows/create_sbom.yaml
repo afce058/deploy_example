@@ -1,12 +1,13 @@
 name: Generate sbom
 on:
   workflow_call:
-    tag:
-      required: true
-      type: string
-    microservicePath:
-      required: true
-      type: string
+    inputs:
+      tag:
+        required: true
+        type: string
+      microservicePath:
+        required: true
+        type: string
 jobs:
   run_tests:
     runs-on: ubuntu-latest
