@@ -10,7 +10,7 @@ on:
 
 jobs:
   run_tests:
-    uses: ./.github/workflows/tests/run_tests.yaml
+    uses: ./.github/workflows/run_tests.yaml
     strategy:
       matrix:
         micro:

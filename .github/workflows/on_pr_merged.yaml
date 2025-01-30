@@ -33,7 +33,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v3.1.11
 
   run_tests:
-    uses: ./.github/workflows/tests/run_tests.yaml
+    uses: ./.github/workflows/run_tests.yaml
     strategy:
       matrix:
         micro:
@@ -44,7 +44,7 @@ jobs:
       microservicePath: ${{ matrix.micro }}
 
   create_sbom:
-    uses: ./.github/workflows/artifacts/create_sbom.yaml
+    uses: ./.github/workflows/create_sbom.yaml
     needs: compute_tag_version
     strategy:
       matrix:
@@ -58,7 +58,7 @@ jobs:
       microservicePath: ${{ matrix.micro }}
 
   create_containers:
-    uses: ./.github/workflows/artifacts/push_container.yaml
+    uses: ./.github/workflows/push_container.yaml
     needs: create_sbom
     strategy:
       matrix:
