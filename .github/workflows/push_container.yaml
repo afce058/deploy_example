@@ -3,7 +3,6 @@ permissions:
   actions: write
   packages: write
   contents: read
-  security-events: write
 
 on:
   workflow_call:
