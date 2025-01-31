@@ -101,10 +101,11 @@ jobs:
           app.name: microservices-app
           tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       - name: Create a relase
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: "${{ secrets.EXTENDED_ACCESSTOKEN }}"
           tag_name: ${{ needs.compute_tag_version.outputs.tag_version }}
           generate_release_notes: true
           files: |
-            "${{ github.workspace }}/deployment-automation/*.yaml"
+            "${{ github.workspace }}/deployment-automation/service1.yaml"
+            "${{ github.workspace }}/deployment-automation/service2.yaml"
