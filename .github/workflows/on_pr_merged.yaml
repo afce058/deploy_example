@@ -64,9 +64,11 @@ jobs:
       - compute_tag_version
     strategy:
       matrix:
-        micro:
-          - service1
-          - service2
+        include:
+          - micro: service1
+            repo: ${{ secrets.DOCKER_REPO_SERVICE1 }}          
+          - micro: service2
+            repo: ${{ secrets.DOCKER_REPO_SERVICE2 }}
       max-parallel: 1
     with:
       environment: prod
@@ -77,4 +79,4 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
-      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      DOCKER_REPO: ${{ matrix.repo }}
