@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 env:
-  services: '["service1", "service2"]'
+  services: "['service1', 'service2']"
   parallel: 2
 
 jobs:
