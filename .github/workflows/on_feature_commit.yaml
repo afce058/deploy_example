@@ -7,9 +7,15 @@ on:
       - "service2/**"
       - "react-client/**"
   workflow_dispatch:
+env:
+  services: '["service1", "service2"]'
+  parallel: 2
 jobs:
-  build:
+  build_micros:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        micro: ${{ fromJson(env.SERVICES) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,13 +28,8 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: compile service1
-        working-directory: ./service1
-        run: |
-          npm install
-          node -e 'require("./src/index.js")'
-      - name: compile service2
-        working-directory: ./service2
+      - name: compile service
+        working-directory: ${{ github.workspace }}/${{ matrix.micro }}
         run: |
           npm install
           node -e 'require("./src/index.js")'
