@@ -19,7 +19,7 @@ jobs:
           sparse-checkout: |
             ${{ inputs.microservicePath }}
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Generate sbom
