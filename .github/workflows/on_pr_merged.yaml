@@ -87,7 +87,7 @@ jobs:
       - name: Replace tokens
         uses: cschleiden/replace-tokens@v1.0
         with:
-          files: '["${{github.workspace}}/deployment-automation/*.yaml"]'
+          files: '["${{ github.workspace }}/deployment-automation/*.yaml"]'
         env: 
           docker.repo1: service1
           docker.repo2: service2
@@ -101,5 +101,5 @@ jobs:
           tag_name: ${{ needs.compute_tag_version.outputs.tag_version }}
           generate_release_notes: true
           files: |
-            ${{github.workspace}}/deployment-automation/service1.yaml
-            ${{github.workspace}}/deployment-automation/service2.yaml
+            ${{ github.workspace }}/deployment-automation/service1.yaml
+            ${{ github.workspace }}/deployment-automation/service2.yaml
