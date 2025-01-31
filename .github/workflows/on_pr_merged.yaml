@@ -84,6 +84,11 @@ jobs:
       - compute_tag_version
       - create_containers
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: 'main'
       - name: Replace tokens
         uses: cschleiden/replace-tokens@v1.0
         with:
