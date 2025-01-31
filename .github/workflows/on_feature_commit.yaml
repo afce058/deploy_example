@@ -34,7 +34,7 @@ jobs:
       max-parallel: ${{ fromJson(needs.parameters.outputs.parallel) }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: setup node
         uses: actions/setup-node@v3
         with:
