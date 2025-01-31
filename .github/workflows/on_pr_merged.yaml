@@ -77,3 +77,29 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+  
+  create_release:
+    runs-on: ubuntu-latest
+    needs: 
+      - compute_tag_version
+      - create_containers
+    steps:
+      - name: Replace tokens
+        uses: cschleiden/replace-tokens@v1.0
+        with:
+          files: '["${{github.workspace}}/deployment-automation/*.yaml"]'
+        env: 
+          docker.repo1: service1
+          docker.repo2: service2
+          namespace: micros
+          app.name: microservices-app
+          tag: ${{ needs.compute_tag_version.outputs.tag_version }}
+      - name: Create a relase
+        uses: softprops/action-gh-release@v1
+        with:
+          token: "${{ secrets.EXTENDED_ACCESSTOKEN }}"
+          tag_name: ${{ needs.compute_tag_version.outputs.tag_version }}
+          generate_release_notes: true
+          files: |
+            ${{github.workspace}}/deployment-automation/service1.yaml
+            ${{github.workspace}}/deployment-automation/service2.yaml
