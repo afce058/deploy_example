@@ -47,7 +47,7 @@ jobs:
         run: |
           docker build -t \
           ${{secrets.DOCKER_REGISTRY}}/\
-          ${{secrets.DOCKER_REPO}}:\
+          ${{inputs.microservicePath}}:\
           ${{inputs.tag}} \
           --file ${{inputs.dockerfileName}} \
           .
@@ -55,7 +55,7 @@ jobs:
       - name: Scan image Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{secrets.DOCKER_REGISTRY}}/${{secrets.DOCKER_REPO}}:${{inputs.tag}}
+          image-ref: ${{secrets.DOCKER_REGISTRY}}/${{inputs.microservicePath}}:${{inputs.tag}}
           format: sarif
           output: trivy_results_${{ inputs.microservicePath }}_${{ inputs.tag }}.sarif
           ignore-unfixed: true
