@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        micro: ${{ fromJson(env.SERVICES) }}
+        micro: ${{ fromJson(env.services) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

@@ -21,7 +21,7 @@ jobs:
     uses: ./.github/workflows/run_tests.yaml
     strategy:
       matrix:
-        micro: ${{ fromJson(env.SERVICES) }}
+        micro: ${{ fromJson(env.services) }}
       max-parallel: ${{ env.parallel }}
     with:
       microservicePath: ${{ matrix.micro }}
@@ -51,7 +51,7 @@ jobs:
     needs: compute_tag_version
     strategy:
       matrix:
-        micro: ${{ fromJson(env.SERVICES) }}
+        micro: ${{ fromJson(env.services) }}
       max-parallel: ${{ env.parallel }}
     with:
       tag: ${{ needs.compute_tag_version.outputs.tag_version }}
@@ -64,7 +64,7 @@ jobs:
       - compute_tag_version
     strategy:
       matrix:
-        micro: ${{ fromJson(env.SERVICES) }}
+        micro: ${{ fromJson(env.services) }}
       max-parallel: ${{ env.parallel }}
     with:
       environment: prod
@@ -92,8 +92,8 @@ jobs:
         with:
           files: '["${{ github.workspace }}/deployment-automation/*.yaml"]'
         env: 
-          docker.repo1: ${{ fromJson(env.SERVICES)[0] }}
-          docker.repo2: ${{ fromJson(env.SERVICES)[1] }}
+          docker.repo1: ${{ fromJson(env.services)[0] }}
+          docker.repo2: ${{ fromJson(env.services)[1] }}
           namespace: micros
           environment: micros
           app.name: microservices-app

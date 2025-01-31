@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/run_tests.yaml
     strategy:
       matrix:
-        micro: ${{ fromJson(env.SERVICES) }}
+        micro: ${{ fromJson(env.services) }}
       max-parallel: ${{ env.parallel }}
     with:
       microservicePath: ${{ matrix.micro }}
