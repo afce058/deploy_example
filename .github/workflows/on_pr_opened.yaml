@@ -13,11 +13,24 @@ env:
   parallel: 2
 
 jobs:
+  parameters:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.capture.outputs.services }}
+      parallel: ${{ steps.capture.outputs.parallel }}
+    steps:
+      - name: save workflow parameters
+        id: capture
+        run: |
+          echo "services=${{ env.services }}" >> $GITHUB_OUTPUT
+          echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
+
   run_tests:
     uses: ./.github/workflows/run_tests.yaml
+    needs: parameters
     strategy:
       matrix:
-        micro: ${{ fromJson(env.services) }}
-      max-parallel: ${{ env.parallel }}
+        micro: ${{ fromJson(needs.parameters.outputs.services) }}
+      max-parallel: ${{ fromJson(needs.parameters.outputs.parallel) }}
     with:
       microservicePath: ${{ matrix.micro }}

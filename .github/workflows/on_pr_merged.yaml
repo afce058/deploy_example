@@ -17,18 +17,32 @@ env:
   parallel: 2
 
 jobs:
+  parameters:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.capture.outputs.services }}
+      parallel: ${{ steps.capture.outputs.parallel }}
+    steps:
+      - name: save workflow parameters
+        id: capture
+        run: |
+          echo "services=${{ env.services }}" >> $GITHUB_OUTPUT
+          echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
+  
   run_tests:
     uses: ./.github/workflows/run_tests.yaml
+    needs: parameters
     strategy:
       matrix:
-        micro: ${{ fromJson(env.services) }}
-      max-parallel: ${{ env.parallel }}
+        micro: ${{ fromJson(needs.parameters.outputs.services) }}
+      max-parallel: ${{ fromJson(needs.parameters.outputs.parallel) }}
     with:
       microservicePath: ${{ matrix.micro }}
 
   compute_tag_version:
     runs-on: ubuntu-latest
-    needs: run_tests
+    needs: 
+      - run_tests
     outputs:
       tag_version: ${{ env.GitVersion_SemVer }}
     steps:
@@ -48,11 +62,13 @@ jobs:
 
   create_sbom:
     uses: ./.github/workflows/create_sbom.yaml
-    needs: compute_tag_version
+    needs: 
+      - compute_tag_version
+      - parameters
     strategy:
       matrix:
-        micro: ${{ fromJson(env.services) }}
-      max-parallel: ${{ env.parallel }}
+        micro: ${{ fromJson(needs.parameters.outputs.services) }}
+      max-parallel: ${{ fromJson(needs.parameters.outputs.parallel) }}
     with:
       tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       microservicePath: ${{ matrix.micro }}
@@ -62,10 +78,11 @@ jobs:
     needs:
       - create_sbom
       - compute_tag_version
+      - parameters
     strategy:
       matrix:
-        micro: ${{ fromJson(env.services) }}
-      max-parallel: ${{ env.parallel }}
+        micro: ${{ fromJson(needs.parameters.outputs.services) }}
+      max-parallel: ${{ fromJson(needs.parameters.outputs.parallel) }}
     with:
       environment: prod
       tag: ${{ needs.compute_tag_version.outputs.tag_version }}

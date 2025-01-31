@@ -7,15 +7,31 @@ on:
       - "service2/**"
       - "react-client/**"
   workflow_dispatch:
+
 env:
   services: '["service1", "service2"]'
   parallel: 2
+
 jobs:
-  build_micros:
+  parameters:
     runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.capture.outputs.services }}
+      parallel: ${{ steps.capture.outputs.parallel }}
+    steps:
+      - name: save workflow parameters
+        id: capture
+        run: |
+          echo "services=${{ env.services }}" >> $GITHUB_OUTPUT
+          echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
+
+  compile_micros:
+    runs-on: ubuntu-latest
+    needs: parameters
     strategy:
       matrix:
-        micro: ${{ fromJson(env.services) }}
+        micro: ${{ fromJson(needs.parameters.outputs.services) }}
+      max-parallel: ${{ fromJson(needs.parameters.outputs.parallel) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
