@@ -1,3 +1,4 @@
 node_modules/
 **/test_results_*.md
 **/sbom_*.json
+**/.env

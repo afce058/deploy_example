@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     // Llamada a Service 1
-    axios.get('http://localhost:5001/api/endpoint1')
+    axios.get(`${process.env.REACT_APP_BASE_SERVICE1}/api/endpoint1`)
       .then(response => {
         setService1Data(response.data);
       })
@@ -15,7 +15,7 @@ function App() {
         console.error('Hubo un error en Service 1:', error);
       });
 
-    axios.get('http://localhost:5001/api/endpoint2')
+    axios.get(`${process.env.REACT_APP_BASE_SERVICE1}/api/endpoint2`)
       .then(response => {
         setService1Data(prevData => ({
           ...prevData,
@@ -27,7 +27,7 @@ function App() {
       });
 
     // Llamada a Service 2
-    axios.get('http://localhost:5002/api/endpoint1')
+    axios.get(`${process.env.REACT_APP_BASE_SERVICE2}/api/endpoint1`)
       .then(response => {
         setService2Data(response.data);
       })
@@ -35,7 +35,7 @@ function App() {
         console.error('Hubo un error en Service 2:', error);
       });
 
-    axios.get('http://localhost:5002/api/endpoint2')
+    axios.get(`${process.env.REACT_APP_BASE_SERVICE2}/api/endpoint2`)
       .then(response => {
         setService2Data(prevData => ({
           ...prevData,
