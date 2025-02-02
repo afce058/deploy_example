@@ -93,11 +93,28 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
   
+  create_front_container:
+    uses: ./.github/workflows/create_front_container.yaml
+    needs:
+      - compute_tag_version
+      - create_containers
+    with:
+      environment: prod
+      environment_file: ${{ secrets.FRONT_ENVIRONMENT }}
+      tag: ${{ needs.compute_tag_version.outputs.tag_version }}
+      microservicePath: frontend_demo
+      dockerfileName: Dockerfile
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+
   create_release:
     runs-on: ubuntu-latest
     needs: 
       - compute_tag_version
       - create_containers
+      - create_front_container
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
