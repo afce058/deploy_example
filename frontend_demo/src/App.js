@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [service1Data, setService1Data] = useState({});
-  const [service2Data, setService2Data] = useState({});
+  const [service1Ep1, setService1Ep1] = useState({});
+  const [service1Ep2, setService1Ep2] = useState({});
+  const [service2Ep1, setService2Ep1] = useState({});
+  const [service2Ep2, setService2Ep2] = useState({});
 
   useEffect(() => {
     // Llamada a Service 1
     axios.get(`${process.env.REACT_APP_BASE_SERVICE1}/api/endpoint1`)
       .then(response => {
-        setService1Data(response.data);
+        setService1Ep1(response.data);
       })
       .catch(error => {
         console.error('Hubo un error en Service 1:', error);
@@ -17,10 +19,7 @@ function App() {
 
     axios.get(`${process.env.REACT_APP_BASE_SERVICE1}/api/endpoint2`)
       .then(response => {
-        setService1Data(prevData => ({
-          ...prevData,
-          endpoint2: response.data
-        }));
+        setService1Ep2(response.data);
       })
       .catch(error => {
         console.error('Hubo un error en Service 1 (endpoint 2):', error);
@@ -29,7 +28,7 @@ function App() {
     // Llamada a Service 2
     axios.get(`${process.env.REACT_APP_BASE_SERVICE2}/api/endpoint1`)
       .then(response => {
-        setService2Data(response.data);
+        setService2Ep1(response.data);
       })
       .catch(error => {
         console.error('Hubo un error en Service 2:', error);
@@ -37,10 +36,7 @@ function App() {
 
     axios.get(`${process.env.REACT_APP_BASE_SERVICE2}/api/endpoint2`)
       .then(response => {
-        setService2Data(prevData => ({
-          ...prevData,
-          endpoint2: response.data
-        }));
+        setService2Ep2(response.data);
       })
       .catch(error => {
         console.error('Hubo un error en Service 2 (endpoint 2):', error);
@@ -52,13 +48,13 @@ function App() {
       <h1>Microservicios Node.js</h1>
       <div>
         <h2>Service 1</h2>
-        <p>{service1Data.message || 'Cargando...'}</p>
-        <p>{service1Data.endpoint2 ? service1Data.endpoint2.message : 'Cargando...'}</p>
+        <p>{service1Ep1.message || 'Cargando...'}</p>
+        <p>{service1Ep2.message || 'Cargando...'}</p>
       </div>
       <div>
         <h2>Service 2</h2>
-        <p>{service2Data.message || 'Cargando...'}</p>
-        <p>{service2Data.endpoint2 ? service2Data.endpoint2.message : 'Cargando...'}</p>
+        <p>{service2Ep1.message || 'Cargando...'}</p>
+        <p>{service2Ep2.message || 'Cargando...'}</p>
       </div>
     </div>
   );

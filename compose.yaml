@@ -36,7 +36,7 @@ services:
   front:
     image: front
     build:
-      context: ./react-client
+      context: ./frontend_demo
       dockerfile: Dockerfile
     container_name: front
     ports:
