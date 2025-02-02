@@ -14,6 +14,7 @@ on:
 
 env:
   services: "['service1', 'service2']"
+  front: frontend_demo
   parallel: 2
 
 jobs:
@@ -102,7 +103,7 @@ jobs:
       environment: prod
       environment_file: ${{ secrets.FRONT_ENVIRONMENT }}
       tag: ${{ needs.compute_tag_version.outputs.tag_version }}
-      microservicePath: frontend_demo
+      microservicePath: ${{ env.front }}
       dockerfileName: Dockerfile
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -128,9 +129,9 @@ jobs:
         env: 
           docker.repo1: ${{ fromJson(env.services)[0] }}
           docker.repo2: ${{ fromJson(env.services)[1] }}
+          docker.repo_front: ${{ env.front }}
           namespace: micros
           environment: micros
-          app.name: microservices-app
           tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       - name: Create a relase
         uses: softprops/action-gh-release@v2

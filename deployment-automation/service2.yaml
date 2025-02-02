@@ -5,7 +5,7 @@ metadata:
   namespace: #{namespace}#
 spec:
   selector:
-    app: #{app.name}#
+    app: #{docker.repo2}#
   ports:
   - protocol: TCP
     port: 4000
@@ -21,11 +21,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: #{app.name}#
+      app: #{docker.repo2}#
   template:
     metadata:
       labels:
-        app: #{app.name}#
+        app: #{docker.repo2}#
     spec:
       containers:
       - name: #{docker.repo2}#
@@ -40,8 +40,8 @@ spec:
         env:
         - name: NODE_ENV
           value: #{environment}#
-        ports:
-        - containerPort: 80
+        - name: PORT
+          value: "80"
         imagePullPolicy: Always
       imagePullSecrets:
         - name: pullsecret
