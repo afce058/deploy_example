@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: minimal-ingress
+  name: vanilla-ingress
   namespace: #{namespace}#
 spec:
   ingressClassName: nginx
@@ -20,12 +20,5 @@ spec:
         backend:
           service:
             name: #{docker.repo2}#
-            port:
-              number: 80
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: #{docker.repo_front}#
             port:
               number: 80
