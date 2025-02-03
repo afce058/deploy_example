@@ -20,8 +20,8 @@ jobs:
         with:
           version: ${{ github.event.release.tag_name }}
           regex: true
-          file: ".*"
-          target: ${{ github.workspace }}/${{ cluster }}
+          file: "*.yaml"
+          target: ${{ github.workspace }}/cluster
 
       - name: Set up Helm
         uses: azure/setup-helm@v1
@@ -54,4 +54,4 @@ jobs:
         with:
           namespace: '${{env.namespace}}'
           manifests: |
-            ${{ github.workspace }}/${{ cluster }}
+            ${{ github.workspace }}/cluster
