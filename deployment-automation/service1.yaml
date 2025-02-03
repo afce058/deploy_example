@@ -8,7 +8,7 @@ spec:
     app: #{docker.repo1}#
   ports:
   - protocol: TCP
-    port: 4000
+    port: 80
     targetPort: 80
   type: ClusterIP
 ---
