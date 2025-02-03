@@ -32,6 +32,10 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{secrets.KUBECONFIG}} 
  
+      - name: Create namespace
+        run: |
+          kubectl create ns ${{ env.micros }} || echo "El namespace ya existe"
+
       - name: provide pull secrets so we can pull the image from gitHub
         uses: azure/k8s-create-secret@v4
         with:
