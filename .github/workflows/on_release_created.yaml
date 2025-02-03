@@ -7,13 +7,13 @@ permissions:
 on:
   release: 
      types: [published] 
-  workflow_dispatch:
+
+env:
+  namespace: micros
 
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
-    environment:
-      name: micros
     steps:
       - name: get release artifacts for deployment, picks data from latest release
         uses: dsaltares/fetch-gh-release-asset@master
@@ -22,6 +22,9 @@ jobs:
           regex: true
           file: ".*"
           target: ${{ github.workspace }}/${{ cluster }}
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
 
       - name: set kubernetes context
         uses: azure/k8s-set-context@v3
@@ -38,6 +41,13 @@ jobs:
             container-registry-url: ${{ secrets.DOCKER_REGISTRY }}
             container-registry-username: ${{ secrets.DOCKER_USERNAME }}
             container-registry-password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up Helm
+        run: |
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          helm repo update
+          helm install ingress-nginx ingress-nginx/ingress-nginx \
+          --namespace ${{ env.namespace }} --create-namespace
 
       - name: Deploy to AKS
         uses: Azure/k8s-deploy@v4
