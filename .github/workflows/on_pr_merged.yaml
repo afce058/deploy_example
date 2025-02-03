@@ -15,7 +15,7 @@ on:
 env:
   services: "['service1', 'service2']"
   namespace: micros
-  front: frontend_demo
+  front_path: frontend_demo
   parallel: 2
 
 jobs:
@@ -24,12 +24,14 @@ jobs:
     outputs:
       services: ${{ steps.capture.outputs.services }}
       parallel: ${{ steps.capture.outputs.parallel }}
+      front_path: ${{ steps.capture.outputs.front_path }}
     steps:
       - name: save workflow parameters
         id: capture
         run: |
           echo "services=${{ env.services }}" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
+          echo "front=${{ env.front_path }}" >> $GITHUB_OUTPUT
   
   run_tests:
     uses: ./.github/workflows/run_tests.yaml
@@ -100,13 +102,14 @@ jobs:
     needs:
       - compute_tag_version
       - create_containers
+      - parameters
     with:
       environment: prod
-      environment_file: ${{ secrets.FRONT_ENVIRONMENT }}
       tag: ${{ needs.compute_tag_version.outputs.tag_version }}
-      microservicePath: ${{ env.front }}
+      frontPath: ${{ needs.parameters.outputs.front_path }}
       dockerfileName: Dockerfile
     secrets:
+      ENVIRONMENT_FILE: ${{ secrets.FRONT_ENVIRONMENT }}
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
