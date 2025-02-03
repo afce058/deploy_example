@@ -14,6 +14,7 @@ on:
 
 env:
   services: "['service1', 'service2']"
+  namespace: ${{ env.namespace }}
   front: frontend_demo
   parallel: 2
 
@@ -130,7 +131,7 @@ jobs:
           docker.repo1: ${{ fromJson(env.services)[0] }}
           docker.repo2: ${{ fromJson(env.services)[1] }}
           docker.repo_front: ${{ env.front }}
-          namespace: micros
+          namespace: ${{ env.namespace }}
           environment: micros
           tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       - name: Create a relase
