@@ -15,7 +15,7 @@ on:
 env:
   services: "['service1', 'service2']"
   namespace: micros
-  front_path: frontend_demo
+  front_path: frontend
   parallel: 2
 
 jobs:

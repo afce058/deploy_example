@@ -36,7 +36,7 @@ services:
   front:
     image: front
     build:
-      context: ./frontend_demo
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: front
     ports:

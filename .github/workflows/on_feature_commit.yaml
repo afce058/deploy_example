@@ -5,7 +5,6 @@ on:
     paths:
       - "service1/**"
       - "service2/**"
-      - "frontend_demo/**"
   workflow_dispatch:
 
 env:
