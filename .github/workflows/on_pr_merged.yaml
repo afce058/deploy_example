@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "services=${{ env.services }}" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
-          echo "front=${{ env.front_path }}" >> $GITHUB_OUTPUT
+          echo "front_path=${{ env.front_path }}" >> $GITHUB_OUTPUT
   
   run_tests:
     uses: ./.github/workflows/run_tests.yaml
