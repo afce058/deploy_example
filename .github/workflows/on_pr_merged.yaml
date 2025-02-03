@@ -14,7 +14,7 @@ on:
 
 env:
   services: "['service1', 'service2']"
-  namespace: ${{ env.namespace }}
+  namespace: micros
   front: frontend_demo
   parallel: 2
 
