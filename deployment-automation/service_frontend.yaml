@@ -14,10 +14,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deploy1
-  namespace: default
-  labels:
-    app: #{docker.repo_front}#
+  name: #{docker.repo_front}#
+  namespace: #{namespace}#
 spec:
   replicas: 1
   selector:
