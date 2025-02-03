@@ -25,7 +25,6 @@ jobs:
       services: ${{ steps.capture.outputs.services }}
       parallel: ${{ steps.capture.outputs.parallel }}
       front_path: ${{ steps.capture.outputs.front_path }}
-      username: ${{ steps.capture.outputs.username }}
     steps:
       - name: save workflow parameters
         id: capture
@@ -33,8 +32,7 @@ jobs:
           echo "services=${{ env.services }}" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
           echo "front_path=${{ env.front_path }}" >> $GITHUB_OUTPUT
-          echo "username=${{ secrets.DOCKER_USERNAME }}" >> $GITHUB_OUTPUT
-  
+
   run_tests:
     uses: ./.github/workflows/run_tests.yaml
     needs: parameters
@@ -119,7 +117,6 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     needs: 
-      - parameters
       - compute_tag_version
       - create_containers
       - create_front_container
@@ -129,6 +126,9 @@ jobs:
         with:
           fetch-depth: 1
           ref: 'main'
+      - name: obtain username
+        run: |
+          echo "username=${{ secrets.DOCKER_USERNAME }}" >> $GITHUB_ENV
       - name: Replace tokens
         uses: cschleiden/replace-tokens@v1.3
         with:
@@ -137,7 +137,7 @@ jobs:
           docker.repo1: ${{ fromJson(env.services)[0] }}
           docker.repo2: ${{ fromJson(env.services)[1] }}
           docker.repo_front: ${{ env.front_path }}
-          docker.username: ${{ needs.parameters.outputs.username }}
+          docker.username: ${{ env.username }}
           namespace: ${{ env.namespace }}
           environment: micros
           tag: ${{ needs.compute_tag_version.outputs.tag_version }}
