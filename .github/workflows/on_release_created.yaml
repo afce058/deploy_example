@@ -35,7 +35,7 @@ jobs:
  
       - name: Create namespace
         run: |
-          kubectl create ns ${{ env.micros }} || echo "El namespace ya existe"
+          kubectl create ns ${{ env.namespace }} || echo "El namespace ya existe"
 
       - name: provide pull secrets so we can pull the image from gitHub
         uses: azure/k8s-create-secret@v4
