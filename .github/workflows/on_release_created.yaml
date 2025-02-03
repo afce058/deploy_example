@@ -27,7 +27,7 @@ jobs:
         uses: azure/setup-helm@v4.2.0
 
       - name: set kubernetes context
-        uses: azure/k8s-set-context@v3
+        uses: azure/k8s-set-context@v4
         id: setcontext
         with:
           method: kubeconfig
