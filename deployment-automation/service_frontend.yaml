@@ -29,7 +29,6 @@ spec:
       containers:
       - name: #{docker.repo_front}#
         image: docker.io/#{docker.username}#/#{docker.repo_front}#:#{tag}#
-        imagePullPolicy: Always
         resources:
           requests:
             memory: "500Mi"
@@ -37,6 +36,6 @@ spec:
           limits:
             memory: "1Gi"
             cpu: "750m"
-      imagePullPolicy: Always
+        imagePullPolicy: Always
       imagePullSecrets:
         - name: pullsecret
