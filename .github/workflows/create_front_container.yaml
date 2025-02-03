@@ -42,7 +42,10 @@ jobs:
       
       - name: Copy environment file
         working-directory: ${{github.workspace}}/${{inputs.frontPath}}
-        run: cat ${{ secrets.ENVIRONMENT_FILE }} >> .env
+        run: |
+          cat << EOF > .env
+          ${{ secrets.ENVIRONMENT_FILE }}
+          EOF 
 
       - name: Login to Docker
         uses: docker/login-action@v3 
