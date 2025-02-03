@@ -133,7 +133,7 @@ jobs:
         env: 
           docker.repo1: ${{ fromJson(env.services)[0] }}
           docker.repo2: ${{ fromJson(env.services)[1] }}
-          docker.repo_front: ${{ env.front }}
+          docker.repo_front: ${{ env.front_path }}
           namespace: ${{ env.namespace }}
           environment: micros
           tag: ${{ needs.compute_tag_version.outputs.tag_version }}
