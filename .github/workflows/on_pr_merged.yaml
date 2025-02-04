@@ -5,15 +5,14 @@ permissions:
   contents: read
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-    - 'service1/**'
-    - 'service2/**'
   workflow_dispatch:
+    inputs:
+      services:
+        description: "services list (no spaces) eg:service1,service2"
+        required: true
+        default: "service1,service2"
 
 env:
-  services: "['service1', 'service2']"
   namespace: micros
   parallel: 2
 
@@ -27,7 +26,8 @@ jobs:
       - name: save workflow parameters
         id: capture
         run: |
-          echo "services=${{ env.services }}" >> $GITHUB_OUTPUT
+          services_json=$(echo '${{ github.event.inputs.services }}' | jq -R -c 'split(",")')
+          echo "services=$services_json" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
 
   run_tests:
