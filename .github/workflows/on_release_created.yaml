@@ -60,4 +60,4 @@ jobs:
 
       - name: Deploy manifests
         run: |
-          kubectl apply -f ${{ github.workspace }}/cluster/
+          kubectl apply -f ${{ github.workspace }}/cluster/ -l deploy=yes

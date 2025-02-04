@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: vanilla-ingress
   namespace: #{namespace}#
+  repo-tag: #{tag}#
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:

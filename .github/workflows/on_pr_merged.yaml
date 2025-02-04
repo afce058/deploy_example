@@ -13,6 +13,7 @@ on:
         default: "service1,service2"
 
 env:
+  cluster_services: "['service1', 'service2']"
   namespace: micros
   parallel: 2
 
@@ -95,6 +96,7 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     needs: 
+      - parameters
       - compute_tag_version
       - create_containers
     steps:
@@ -111,11 +113,13 @@ jobs:
         with:
           files: '["${{ github.workspace }}/deployment-automation/*.yaml"]'
         env: 
-          docker.repo1: ${{ fromJson(env.services)[0] }}
-          docker.repo2: ${{ fromJson(env.services)[1] }}
+          docker.repo1: ${{ fromJson(env.cluster_services)[0] }}
+          docker.repo2: ${{ fromJson(env.cluster_services)[1] }}
+          deploy.service1: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[0]) ? 'yes' : 'no' }}"
+          deploy.service2: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[1]) ? 'yes' : 'no' }}"
           docker.username: ${{ env.username }}
           namespace: ${{ env.namespace }}
-          environment: micros
+          environment: ${{ env.namespace }}
           tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       - name: Create a relase
         uses: softprops/action-gh-release@v2
