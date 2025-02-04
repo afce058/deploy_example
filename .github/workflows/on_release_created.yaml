@@ -50,7 +50,8 @@ jobs:
         run: |
           helm repo add kong https://charts.konghq.com
           helm repo update
-          helm upgrade --install kong kong/kong -n ${{ env.namespace }}
+          helm upgrade --install kong kong/kong \
+          --namespace ${{ env.namespace }} --create-namespace
 
       - name: Deploy manifests
         run: |
