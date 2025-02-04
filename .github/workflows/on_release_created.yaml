@@ -42,6 +42,7 @@ jobs:
       - name: Create pull secret
         run: |
           kubectl create secret docker-registry pullsecret \
+          -n ${{ env.namespace }} \
           --docker-server=docker.io \
           --docker-username=${{ secrets.DOCKER_USERNAME }} \
           --docker-password=${{ secrets.DOCKER_PASSWORD }}
