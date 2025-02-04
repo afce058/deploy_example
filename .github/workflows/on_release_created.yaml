@@ -39,16 +39,7 @@ jobs:
         run: |
           kubectl create ns ${{ env.namespace }} || echo "El namespace ya existe"
 
-      - name: provide pull secrets so we can pull the image from gitHub
-        uses: azure/k8s-create-secret@v5
-        with:
-            namespace: '${{env.namespace}}'
-            secret-name: 'pullsecret'
-            container-registry-url: ${{ secrets.DOCKER_REGISTRY }}
-            container-registry-username: ${{ secrets.DOCKER_USERNAME }}
-            container-registry-password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Set up Helm
+      - name: Set up ingress
         run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           helm repo update
