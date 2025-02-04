@@ -115,8 +115,8 @@ jobs:
         env: 
           docker.repo1: ${{ fromJson(env.cluster_services)[0] }}
           docker.repo2: ${{ fromJson(env.cluster_services)[1] }}
-          deploy.service1: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[0]) ? 'yes' : 'no' }}"
-          deploy.service2: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[1]) ? 'yes' : 'no' }}"
+          deploy.service1: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[0]) && 'yes' || 'no' }}"
+          deploy.service2: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[1]) && 'yes' || 'no' }}"
           docker.username: ${{ env.username }}
           namespace: ${{ env.namespace }}
           environment: ${{ env.namespace }}
