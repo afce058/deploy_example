@@ -4,7 +4,7 @@ metadata:
   name: vanilla-ingress
   namespace: #{namespace}#
 spec:
-  ingressClassName: nginx
+  ingressClassName: kong
   rules:
   - http:
       paths:

@@ -48,10 +48,9 @@ jobs:
 
       - name: Set up ingress
         run: |
-          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          helm repo add kong https://charts.konghq.com
           helm repo update
-          helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-          --namespace ${{ env.namespace }} --create-namespace
+          helm upgrade --install kong kong/kong -n ${{ env.namespace }}
 
       - name: Deploy manifests
         run: |
