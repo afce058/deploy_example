@@ -20,6 +20,9 @@ kind: Deployment
 metadata:
   name: #{docker.repo1}#
   namespace: #{namespace}#
+  repo-tag: #{tag}#
+  labels:
+    deploy: #{deploy.service1}#
 spec:
   replicas: 1
   selector:
