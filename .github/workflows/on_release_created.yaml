@@ -39,6 +39,13 @@ jobs:
         run: |
           kubectl create ns ${{ env.namespace }} || echo "El namespace ya existe"
 
+      - name: Create pull secret
+        run: |
+          kubectl create secret docker-registry pullsecret \
+          --docker-server=docker.io \
+          --docker-username=${{ secrets.DOCKER_USERNAME }} \
+          --docker-password=${{ secrets.DOCKER_PASSWORD }}
+
       - name: Set up ingress
         run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -46,9 +53,6 @@ jobs:
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
           --namespace ${{ env.namespace }} --create-namespace
 
-      - name: Deploy to AKS
-        uses: Azure/k8s-deploy@v5
-        with:
-          namespace: '${{env.namespace}}'
-          manifests: |
-            ${{ github.workspace }}/cluster
+      - name: Deploy manifests
+        run: |
+          kubectl apply -f ${{ github.workspace }}/cluster/
