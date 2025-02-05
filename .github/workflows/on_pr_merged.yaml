@@ -11,9 +11,13 @@ on:
         description: "services list (no spaces) eg:service1,service2"
         required: true
         default: "service1,service2"
+      deployFront:
+        description: "Should deploy front yes/no"
+        required: true
+        default: "no"
 
 env:
-  cluster_services: "['service1', 'service2']"
+  cluster_services: "['service1', 'service2', 'frontend']"
   namespace: micros
   parallel: 2
 
@@ -30,6 +34,7 @@ jobs:
           services_json=$(echo '${{ github.event.inputs.services }}' | jq -R -c 'split(",")')
           echo "services=$services_json" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
+          echo "deployFront=${{ env.deployFront }}" >> $GITHUB_OUTPUT
 
   run_tests:
     uses: ./.github/workflows/run_tests.yaml
@@ -115,8 +120,10 @@ jobs:
         env: 
           docker.repo1: ${{ fromJson(env.cluster_services)[0] }}
           docker.repo2: ${{ fromJson(env.cluster_services)[1] }}
+          docker.repo_front: ${{ fromJson(env.cluster_services)[2] }}
           deploy.service1: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[0]) && 'yes' || 'no' }}"
           deploy.service2: "${{ contains(fromJson(needs.parameters.outputs.services), fromJson(env.cluster_services)[1]) && 'yes' || 'no' }}"
+          deploy.front: "${{ needs.parameters.outputs.deployFront }}"
           docker.username: ${{ env.username }}
           namespace: ${{ env.namespace }}
           environment: ${{ env.namespace }}
@@ -128,6 +135,7 @@ jobs:
           tag_name: ${{ needs.compute_tag_version.outputs.tag_version }}
           generate_release_notes: true
           files: |
+            ${{ github.workspace }}/deployment-automation/service_frontend.yaml
             ${{ github.workspace }}/deployment-automation/service1.yaml
             ${{ github.workspace }}/deployment-automation/service2.yaml
             ${{ github.workspace }}/deployment-automation/ingress.yaml

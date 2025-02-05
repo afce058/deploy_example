@@ -30,6 +30,7 @@ spec:
       app: #{docker.repo2}#
   template:
     metadata:
+      repo-tag: #{tag}#
       labels:
         app: #{docker.repo2}#
     spec:

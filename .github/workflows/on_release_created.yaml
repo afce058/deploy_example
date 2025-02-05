@@ -39,14 +39,6 @@ jobs:
         run: |
           kubectl create ns ${{ env.namespace }} || echo "El namespace ya existe"
 
-      - name: Create pull secret
-        run: |
-          kubectl create secret docker-registry pullsecret \
-          -n ${{ env.namespace }} \
-          --docker-server=docker.io \
-          --docker-username=${{ secrets.DOCKER_USERNAME }} \
-          --docker-password=${{ secrets.DOCKER_PASSWORD }}
-
       - name: Set up ingress
         run: |
           helm repo add kong https://charts.konghq.com
@@ -57,6 +49,14 @@ jobs:
       - name: Wait for Kong to be ready
         run: |
           kubectl wait --for=condition=available --timeout=120s deployment/kong-kong -n ${{ env.namespace }}
+
+      - name: Create pull secret
+        run: |
+          kubectl create secret docker-registry pullsecret \
+          -n ${{ env.namespace }} \
+          --docker-server=docker.io \
+          --docker-username=${{ secrets.DOCKER_USERNAME }} \
+          --docker-password=${{ secrets.DOCKER_PASSWORD }}
 
       - name: Deploy manifests
         run: |

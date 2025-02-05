@@ -1,42 +1,41 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: #{docker.repo1}#
+  name: #{docker.repo_front}#
   namespace: #{namespace}#
   repo-tag: #{tag}#
   labels:
-    deploy: #{deploy.service1}#
+    deploy: #{deploy.front}#
 spec:
   selector:
-    app: #{docker.repo1}#
+    app: #{docker.repo_front}#
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
+  - port: 80
+    protocol: TCP
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: #{docker.repo1}#
+  name: #{docker.repo_front}#
   namespace: #{namespace}#
   repo-tag: #{tag}#
   labels:
-    deploy: #{deploy.service1}#
+    deploy: #{deploy.front}#
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: #{docker.repo1}#
+      app: #{docker.repo_front}#
   template:
     metadata:
       repo-tag: #{tag}#
       labels:
-        app: #{docker.repo1}#
+        app: #{docker.repo_front}#
     spec:
       containers:
-      - name: #{docker.repo1}#
-        image: docker.io/#{docker.username}#/#{docker.repo1}#:#{tag}#
+      - name: #{docker.repo_front}#
+        image: docker.io/#{docker.username}#/#{docker.repo_front}#:#{tag}#
         resources:
           requests:
             memory: "150Mi"
@@ -44,11 +43,6 @@ spec:
           limits:
             memory: "200Mi"
             cpu: "200m"
-        env:
-        - name: NODE_ENV
-          value: #{environment}#
-        - name: PORT
-          value: "80"
         imagePullPolicy: Always
       imagePullSecrets:
         - name: pullsecret

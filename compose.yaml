@@ -32,3 +32,18 @@ services:
       - PORT=80
       - NODE_ENV=development
     restart: "no"
+
+  front:
+    image: front
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: front
+    ports:
+      - "4002:80"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - service1
+      - service2
+    restart: "no"
