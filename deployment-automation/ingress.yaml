@@ -4,6 +4,8 @@ metadata:
   name: vanilla-ingress
   namespace: #{namespace}#
   repo-tag: #{tag}#
+  labels:
+    deploy: yes
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
