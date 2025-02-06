@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       services: ${{ steps.capture.outputs.services }}
+      namespace: ${{ steps.capture.outputs.namespace }}
       parallel: ${{ steps.capture.outputs.parallel }}
       deployFront: ${{ steps.capture.outputs.deployFront }}
     steps:
@@ -34,6 +35,7 @@ jobs:
         run: |
           services_json=$(echo '${{ github.event.inputs.services }}' | jq -R -c 'split(",")')
           echo "services=$services_json" >> $GITHUB_OUTPUT
+          echo "namespace=${{ env.namespace }}" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
           echo "deployFront=${{ github.event.inputs.deployFront }}" >> $GITHUB_OUTPUT
 
@@ -72,7 +74,7 @@ jobs:
       - compute_tag_version
       - parameters
     with:
-      namespace: ${{ env.namespace }}
+      namespace: ${{ needs.parameters.outputs.namespace }}
     secrets:
       KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
