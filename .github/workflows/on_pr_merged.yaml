@@ -139,3 +139,4 @@ jobs:
             ${{ github.workspace }}/deployment-automation/service1.yaml
             ${{ github.workspace }}/deployment-automation/service2.yaml
             ${{ github.workspace }}/deployment-automation/ingress.yaml
+            ${{ github.workspace }}/deployment-automation/ingress_frontend.yaml
