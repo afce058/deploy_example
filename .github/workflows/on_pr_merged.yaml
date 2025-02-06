@@ -35,7 +35,7 @@ jobs:
           services_json=$(echo '${{ github.event.inputs.services }}' | jq -R -c 'split(",")')
           echo "services=$services_json" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
-          echo "deployFront=${{ env.deployFront }}" >> $GITHUB_OUTPUT
+          echo "deployFront=${{ github.event.inputs.deployFront }}" >> $GITHUB_OUTPUT
 
   run_tests:
     uses: ./.github/workflows/run_tests.yaml
