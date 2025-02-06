@@ -45,8 +45,8 @@ jobs:
         working-directory: ${{github.workspace}}/${{inputs.frontPath}}
         run: |
           cat << EOF > .env
-          REACT_APP_BASE_SERVICE1=${{ inputs.basePath }}
-          REACT_APP_BASE_SERVICE2=${{ inputs.basePath }}
+          REACT_APP_BASE_SERVICE1="http://${{ inputs.basePath }}"
+          REACT_APP_BASE_SERVICE2="http://${{ inputs.basePath }}"
           EOF 
 
       - name: Login to Docker
