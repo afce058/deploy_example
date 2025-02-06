@@ -31,7 +31,8 @@ spec:
       app: #{docker.repo_front}#
   template:
     metadata:
-      repo-tag: #{tag}#
+      annotations:
+        repo-tag: #{tag}#
       labels:
         app: #{docker.repo_front}#
     spec:

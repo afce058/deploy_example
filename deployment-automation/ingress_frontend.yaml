@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: frontend_ingress
   namespace: #{namespace}#
-  repo-tag: #{tag}#
   labels:
     deploy: "#{deploy.front}#"
   annotations:
