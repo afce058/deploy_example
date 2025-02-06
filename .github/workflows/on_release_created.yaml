@@ -24,7 +24,6 @@ jobs:
           target: "cluster/"
 
       - uses: azure/setup-kubectl@v3
-      - uses: azure/setup-helm@v4.2.0
 
       - name: Create/Verify `.kube` directory
         run: mkdir -p ~/.kube/
@@ -34,21 +33,6 @@ jobs:
           cat << EOF > ~/.kube/config
           ${{ secrets.KUBECONFIG }}
           EOF
- 
-      - name: Create namespace
-        run: |
-          kubectl create ns ${{ env.namespace }} || echo "El namespace ya existe"
-
-      - name: Set up ingress
-        run: |
-          helm repo add kong https://charts.konghq.com
-          helm repo update
-          helm upgrade --install kong kong/kong \
-          --namespace ${{ env.namespace }} --create-namespace
-
-      - name: Wait for Kong to be ready
-        run: |
-          kubectl wait --for=condition=available --timeout=120s deployment/kong-kong -n ${{ env.namespace }}
 
       - name: Create pull secret
         run: |

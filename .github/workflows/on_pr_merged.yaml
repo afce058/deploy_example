@@ -66,6 +66,16 @@ jobs:
         id: gitversion 
         uses: gittools/actions/gitversion/execute@v3.1.11
 
+  create_ingress_controller:
+    uses: ./.github/workflows/create_ingress_controller.yaml
+    needs:
+      - compute_tag_version
+      - parameters
+    with:
+      namespace: ${{ env.namespace }}
+    secrets:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
   create_sbom:
     uses: ./.github/workflows/create_sbom.yaml
     needs: 
@@ -94,6 +104,25 @@ jobs:
       tag: ${{ needs.compute_tag_version.outputs.tag_version }}
       microservicePath: ${{ matrix.micro }}
       dockerfileName: Dockerfile
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+
+  create_front_container:
+    uses: ./.github/workflows/create_front_container.yaml
+    if: inputs.deployFront == 'yes'
+    needs:
+      - compute_tag_version
+      - create_containers
+      - create_ingress_controller
+      - parameters
+    with:
+      environment: prod
+      tag: ${{ needs.compute_tag_version.outputs.tag_version }}
+      frontPath: ${{ needs.parameters.outputs.front_path }}
+      dockerfileName: Dockerfile
+      basePath: ${{ needs.create_ingress_controller.outputs.balancer_address }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

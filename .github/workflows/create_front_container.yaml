@@ -18,10 +18,11 @@ on:
         type: string
       dockerfileName:
         required: true
+        type: string      
+      basePath:
+        required: true
         type: string
     secrets:
-      ENVIRONMENT_FILE:
-        required: true
       DOCKER_USERNAME:
         required: true
       DOCKER_PASSWORD:
@@ -44,7 +45,8 @@ jobs:
         working-directory: ${{github.workspace}}/${{inputs.frontPath}}
         run: |
           cat << EOF > .env
-          ${{ secrets.ENVIRONMENT_FILE }}
+          REACT_APP_BASE_SERVICE1=${{ inputs.basePath }}
+          REACT_APP_BASE_SERVICE2=${{ inputs.basePath }}
           EOF 
 
       - name: Login to Docker

@@ -1,0 +1,54 @@
+name: On release created
+permissions:
+  actions: write
+  packages: write
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      namespace:
+        required: true
+        type: string
+    secrets:
+      KUBECONFIG:
+        required: true
+    outputs:
+      balancer_address:
+        value: ${{ jobs.ingress_init.outputs.balancer_addr }}
+
+jobs:
+  ingress_init:
+    runs-on: ubuntu-latest
+    outputs:
+      balancer_addr: ${{ steps.balancer_wait.outputs.addr }}
+    steps:
+      - uses: azure/setup-kubectl@v3
+      - uses: azure/setup-helm@v4.2.0
+
+      - name: Create/Verify `.kube` directory
+        run: mkdir -p ~/.kube/
+
+      - name: Create kubectl config
+        run: |
+          cat << EOF > ~/.kube/config
+          ${{ secrets.KUBECONFIG }}
+          EOF
+ 
+      - name: Create namespace
+        run: |
+          kubectl create ns ${{ inputs.namespace }} || echo "El namespace ya existe"
+
+      - name: Set up ingress
+        run: |
+          helm repo add kong https://charts.konghq.com
+          helm repo update
+          helm upgrade --install kong kong/kong \
+          --namespace ${{ inputs.namespace }} --create-namespace
+
+      - name: Wait for Kong to be ready
+        id: balancer_wait
+        run: |
+          kubectl wait --for=condition=available --timeout=120s deployment/kong-kong -n ${{ inputs.namespace }}
+          ADDR=$(kubectl get svc -n ${{ inputs.namespace }} kong-kong-proxy -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          echo "addr=$ADDR" >> $GITHUB_OUTPUT
