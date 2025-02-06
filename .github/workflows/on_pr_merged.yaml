@@ -29,6 +29,7 @@ jobs:
       namespace: ${{ steps.capture.outputs.namespace }}
       parallel: ${{ steps.capture.outputs.parallel }}
       deployFront: ${{ steps.capture.outputs.deployFront }}
+      front_path: ${{ steps.capture.outputs.front_path }}
     steps:
       - name: save workflow parameters
         id: capture
@@ -37,6 +38,7 @@ jobs:
           echo "services=$services_json" >> $GITHUB_OUTPUT
           echo "namespace=${{ env.namespace }}" >> $GITHUB_OUTPUT
           echo "parallel=${{ env.parallel }}" >> $GITHUB_OUTPUT
+          echo "front_path=${{ fromJson(env.cluster_services)[2] }}" >> $GITHUB_OUTPUT
           echo "deployFront=${{ github.event.inputs.deployFront }}" >> $GITHUB_OUTPUT
 
   run_tests:
