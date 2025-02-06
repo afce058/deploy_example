@@ -5,7 +5,7 @@ metadata:
   namespace: #{namespace}#
   repo-tag: #{tag}#
   labels:
-    deploy: yes
+    deploy: "yes"
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:

@@ -5,7 +5,7 @@ metadata:
   namespace: #{namespace}#
   repo-tag: #{tag}#
   labels:
-    deploy: #{deploy.service1}#
+    deploy: "#{deploy.service1}#"
 spec:
   selector:
     app: #{docker.repo1}#
@@ -22,7 +22,7 @@ metadata:
   namespace: #{namespace}#
   repo-tag: #{tag}#
   labels:
-    deploy: #{deploy.service1}#
+    deploy: "#{deploy.service1}#"
 spec:
   replicas: 1
   selector:
