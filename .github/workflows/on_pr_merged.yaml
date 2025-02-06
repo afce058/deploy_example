@@ -130,10 +130,12 @@ jobs:
 
   create_release:
     runs-on: ubuntu-latest
+    if: always()
     needs: 
       - parameters
       - compute_tag_version
       - create_containers
+      - create_front_container
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
