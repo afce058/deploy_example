@@ -8,6 +8,7 @@ metadata:
     deploy: "#{deploy.front}#"
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    repo-tag: #{tag}#
 spec:
   ingressClassName: kong
   rules:

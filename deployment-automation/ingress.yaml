@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: services-ingress
   namespace: #{namespace}#
-  repo-tag: #{tag}#
   labels:
     deploy: "yes"
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    repo-tag: #{tag}#
 spec:
   ingressClassName: kong
   rules:

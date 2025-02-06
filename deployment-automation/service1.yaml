@@ -3,7 +3,8 @@ kind: Service
 metadata:
   name: #{docker.repo1}#
   namespace: #{namespace}#
-  repo-tag: #{tag}#
+  annotations:
+    repo-tag: #{tag}#
   labels:
     deploy: "#{deploy.service1}#"
 spec:
@@ -20,7 +21,8 @@ kind: Deployment
 metadata:
   name: #{docker.repo1}#
   namespace: #{namespace}#
-  repo-tag: #{tag}#
+  annotations:
+    repo-tag: #{tag}#
   labels:
     deploy: "#{deploy.service1}#"
 spec:
