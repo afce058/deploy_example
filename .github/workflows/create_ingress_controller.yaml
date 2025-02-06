@@ -1,4 +1,4 @@
-name: On release created
+name: Create ingress controller
 permissions:
   actions: write
   packages: write
