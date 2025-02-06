@@ -27,6 +27,7 @@ jobs:
     outputs:
       services: ${{ steps.capture.outputs.services }}
       parallel: ${{ steps.capture.outputs.parallel }}
+      deployFront: ${{ steps.capture.outputs.deployFront }}
     steps:
       - name: save workflow parameters
         id: capture
