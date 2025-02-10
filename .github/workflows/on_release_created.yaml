@@ -23,7 +23,7 @@ jobs:
           file: ".*\\.yaml"
           target: "cluster/"
 
-      - uses: azure/setup-kubectl@v3
+      - uses: azure/setup-kubectl@v4
 
       - name: Create/Verify `.kube` directory
         run: mkdir -p ~/.kube/

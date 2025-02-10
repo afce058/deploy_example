@@ -23,7 +23,7 @@ jobs:
     outputs:
       balancer_addr: ${{ steps.balancer_wait.outputs.addr }}
     steps:
-      - uses: azure/setup-kubectl@v3
+      - uses: azure/setup-kubectl@v4
       - uses: azure/setup-helm@v4.2.0
 
       - name: Create/Verify `.kube` directory
